@@ -18,7 +18,17 @@ def dependents_int(dependents):
         dependents = int(dependents.replace('+',''))
     return dependents
     
+#function to calculate min_installment
+def installment(loan,months):
+    return loan *1000 *(1-.2) /months
 
+#function to calculate ratio_of_income
+def ratio_income(installment,income):
+    return installment /income *100
+
+#function to calculate the rest of whole incomes after minimum installment
+#def diff_incomes(ApplicantIncome,CoapplicantIncome,installment):
+#    return ApplicantIncome + CoapplicantIncome - installment
 
  #main 
 def main():
@@ -40,16 +50,17 @@ def main():
     
     Coapplicant_Income  = st.slider("Coapplicant Income:",0 , 41667 ,step=1)
 
-    LoanAmount  = st.slider("Loan Amount:",9.0 , 700.0 , step=1.0)
+    LoanAmount  = st.slider("Loan Amount:(with thouthand)",9.0 , 700.0 , step=1.0)
 
     Loan_Amount_Term  = st.selectbox('Loan Amount Term',[480.0  ,360.0 ,300.0 ,240.0 ,180.0  ,120.0 ,84.0 ,60.0 ,36.0 ,12.0])
     Credit_History = st.radio('Credit History:',[0,1],horizontal=True)
     Property_Area = st.radio('Property Area:',['Semiurban','Urban','Rural'],horizontal=True)
 
     #calculate rest features by calling its functions
-    #installment = ()
-    #ratio_of_income = ()
-    
+    min_installment = installment(LoanAmount,Loan_Amount_Term)
+    ratio_of_income = ratio_income(min_installment,Applicant_Income)
+    #diff = diff_incomes(Applicant_Income,Coapplicant_Income,min_installment)
+
     
 
     
@@ -69,8 +80,9 @@ def main():
     df.at[0,'Loan_Amount_Term']=  Loan_Amount_Term
     df.at[0,'Credit_History']=  Credit_History
     df.at[0,'Property_Area']=  Property_Area
-    #df.at[0,'installment']=  installment
-    #df.at[0,'ratio_of_income']=  ratio_of_income
+    df.at[0,'min_installment']=  min_installment
+    df.at[0,'ratio_of_income']=  ratio_of_income
+    #df.at[0,'diff_all']=  diff
 
 
     
